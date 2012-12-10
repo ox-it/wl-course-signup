@@ -106,9 +106,10 @@ public class OxcapPopulatorWrapper implements PopulatorWrapper {
 	public void update(PopulatorContext context) {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		XcriLogWriter writer = null;
 		
 		try {
-			XcriLogWriter writer = new XcriLogWriter(out, context.getName()+"ImportDeleted", "Deleted Groups and Components from SES Import", null);
+			writer = new XcriLogWriter(out, context.getName()+"ImportDeleted", "Deleted Groups and Components from SES Import", null);
 			
 			dao.flagSelectedCourseGroups(context.getName());
 			dao.flagSelectedCourseComponents(context.getName());
@@ -125,26 +126,43 @@ public class OxcapPopulatorWrapper implements PopulatorWrapper {
             	writer.write("Deleting component ["+component.getComponentId()+" "+component.getTitle()+"]"+"\n");
             }
             
-            writer.flush();
-            writer.close();
+            writer.footer();
 			proxy.writeLog(writer.getIdName(), writer.getDisplayName(), out.toByteArray());
 			
         } catch (IllegalStateException e) {
         	log.error("IllegalStateException ["+context.getURI()+"]", e);
+        	
         } catch (IOException e) {
         	log.error("IOException ["+context.getURI()+"]", e);
+        	
 		} catch (VirusFoundException e) {
 			log.error("VirusFoundException ["+context.getURI()+"]", e);
+			
 		} catch (OverQuotaException e) {
 			log.error("OverQuotaException ["+context.getURI()+"]", e);
+			
 		} catch (ServerOverloadException e) {
 			log.error("ServerOverloadException ["+context.getURI()+"]", e);
+			
 		} catch (PermissionException e) {
 			log.error("PermissionException ["+context.getURI()+"]", e);
+			
 		} catch (TypeException e) {
 			log.error("TypeException ["+context.getURI()+"]", e);
+			
 		} catch (InUseException e) {
 			log.error("InUseException ["+context.getURI()+"]", e);
+			
+		} finally {
+			if (null != writer) {
+				try {
+					writer.flush();
+					writer.close();
+					
+				} catch (IOException e) {
+					log.error("IOException ["+context.getURI()+"]", e);
+				}
+			}
 		}
        
 	}

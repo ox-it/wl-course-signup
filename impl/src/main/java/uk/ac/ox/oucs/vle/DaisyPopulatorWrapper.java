@@ -47,9 +47,10 @@ public class DaisyPopulatorWrapper implements PopulatorWrapper {
 	public void update(PopulatorContext context) {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		XcriLogWriter writer = null;
 		
 		try {
-			XcriLogWriter writer = new XcriLogWriter(out, context.getName()+"ImportDeleted", "Deleted Groups and Components from SES Import", null);
+			writer = new XcriLogWriter(out, context.getName()+"ImportDeleted", "Deleted Groups and Components from SES Import", null);
 	
 			dao.flagSelectedDaisyCourseGroups(context.getName());
 			dao.flagSelectedDaisyCourseComponents(context.getName());
@@ -75,26 +76,36 @@ public class DaisyPopulatorWrapper implements PopulatorWrapper {
         	
         } catch (IOException e) {
 			log.warn("Failed to write content to logfile.", e);
+			
         } catch (VirusFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("VirusFoundException ["+context.getURI()+"]", e);
+			
 		} catch (OverQuotaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("OverQuotaException ["+context.getURI()+"]", e);
+			
 		} catch (ServerOverloadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("ServerOverloadException ["+context.getURI()+"]", e);
+			
 		} catch (PermissionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("PermissionException ["+context.getURI()+"]", e);
+			
 		} catch (TypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("TypeException ["+context.getURI()+"]", e);
+			
 		} catch (InUseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       
+			log.error("InUseException ["+context.getURI()+"]", e);
+			
+		} finally {
+			if (null != writer) {
+				try {
+					writer.flush();
+					writer.close();
+					
+				} catch (IOException e) {
+					log.error("IOException ["+context.getURI()+"]", e);
+				}
+			}
+		}   
 	}
 	
 }
