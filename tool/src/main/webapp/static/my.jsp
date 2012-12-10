@@ -34,8 +34,29 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 	<script type="text/javascript" src="lib/serverDate.js"></script>
 	<script type="text/javascript" src="lib/jquery.tooltip.js"></script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 	$(function() {
+		
+		// The site to load the static files from.
+		var signupSiteId = "/access/content/group/<%= ServerConfigurationService.getString("course-signup.site-id", "course-signup") %>";
+		
+		/**
+		* This loads details about a node in the tree.
+	 	* This basically loads a HTML files and shows the user.
+	 	* @param {Object} id
+	 	*/
+		$.ajax( {
+			"url": signupSiteId + "/my_modules.html",
+			"cache": false,
+			"success": function(data){
+				// This is because we now top and tail files in Sakai.
+				data = data.replace(/^(.|\n)*<body[^>]*>/im, "");
+				data = data.replace(/<\/body[^>]*>(.|\n)*$/im, "");
+				$("#notes").html(data);
+			}
+		});
+	
+				
 		$("#signups").html('<table border="0" class="display" id="signups-table"></table>');
 		var signups = $("#signups-table").signupTable("../rest/signup/my", false);
 		Signup.util.autoresize();
@@ -57,6 +78,10 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 </ul>
 </div>
 
+<div id="notes">
+            <!-- Show the contents of my_modules.html -->
+</div>
+		
 <div id="signups"><!-- Browse the areas which there are courses -->
 </div>
 
