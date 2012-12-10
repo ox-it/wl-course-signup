@@ -24,6 +24,7 @@
 			<groupId>org.sakaiproject.kernel</groupId>
 			<artifactId>sakai-kernel-util</artifactId>
 		</dependency>
+		  
 		<dependency>
 			<groupId>uk.ac.ox.oucs</groupId>
 			<artifactId>course-signup-api</artifactId>
@@ -40,21 +41,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Needed to generate the static listing of departments. -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
-			<type>jar</type>
-			<version>1.5.3</version>
-		</dependency>
-		
-		<dependency>
-    		<groupId>org.apache.xmlbeans</groupId>
-    		<artifactId>xmlbeans</artifactId>
-    		<version>2.4.0</version>
-    		<scope>compile</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.sakaiproject.scheduler</groupId>
 			<artifactId>scheduler-api</artifactId>
@@ -134,7 +120,8 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
+			<!-- <version>3.8.2</version>  -->
+			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -155,6 +142,12 @@
 			<version>1.5.2</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.xcri</groupId>
+            <artifactId>xcri4j</artifactId>
+            <scope>compile</scope>
+            <version>1.0ox1</version>
+        </dependency>
 	</dependencies>
 	<profiles>
 		<profile>
@@ -172,33 +165,5 @@
 		<testResources>
 			<testResource><directory>src/test/resources</directory></testResource>
 		</testResources>
-		
-		<plugins>
-		
-      		<plugin>
-        		<groupId>org.codehaus.mojo</groupId>
-        		<artifactId>xmlbeans-maven-plugin</artifactId>
-        		<version>2.3.3</version>
-        		<executions>
-          			<execution>
-            			<phase>generate-sources</phase>
-            			<goals>
-              				<goal>xmlbeans</goal>
-            			</goals>
-          			</execution>
-        		</executions>
-        		<configuration>
-                    <schemaDirectory>src/main/xsd</schemaDirectory>
-                    <staleFile>${project.build.directory}/generated-sources/xmlbeans/.staleFlag</staleFile>
-                    <verbose>false</verbose>
-                    <quiet>false</quiet>
-                    <javaSource>1.6</javaSource> 
-					<noPvr>true</noPvr>  
-					<download>true</download>                   
-                </configuration>
-        		
-      		</plugin>
-    	</plugins>
-		
 	</build>
 </project>
