@@ -43,6 +43,7 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 	
 		var externalUser = <c:out value="${externalUser}" />;
 		var recentDays = "<%= ServerConfigurationService.getString("recent.days", "14") %>";
+		var daisy = "Daisy";
 	
 		$(function(){
 
@@ -116,10 +117,14 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 		            				var isOneBookable = false;
 		            				var areSomePlaces = false;
 		            				var newCourse = false;
+		            				var daisyCourse = false;
+		            				var opensText = "";
 		                        	
 		                            $.each(this.components, 
 		                            		function(){
-                            			
+		                            			if (this.opensText) {
+		                            				opensText = this.opensText;
+		                            			}
 		                            			var isOpen = this.opens < now && this.closes > now;
 		            							if (this.opens > now && this.opens < nextOpen) {
 		            								nextOpen = this.opens;
@@ -133,22 +138,24 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 		            									areSomePlaces = true;
 		            								}
 		            							}
-		            							if (!isOneBookable) {
-		            								isOneBookable = this.bookable;
+		            							if (daisy == this.source) {
+		            								daisyCourse = true;
+		            								if (daisy == this.source && !isOneBookable) {
+		            									isOneBookable = this.bookable;
+		            								}
 		            							}
 		            							var newDate = now - (recentDays * 24 * 60 * 60 * 1000); 
 		            							if (this.created > newDate) {
 		            								newCourse = true;
 		            							}
-		            							
 		            							if (starts != 0 && this.starts < starts) {
 		                            				return;
 		                            			}
 		                            			starts = this.starts;
 		                            });
 		                            
-		                            if (!isOneBookable) {
-		            					summary = "not bookable";
+		                            if (daisyCourse && !isOneBookable) {
+		            						summary = "not bookable";
 		            				}
 		            				if (isOneOpen) {
 		            					if (areSomePlaces) {
@@ -158,11 +165,15 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 		            					}
 		            				} else {
 		            					if (nextOpen == Number.MAX_VALUE) {
-		            						summary = "not bookable";
+		            						if (!daisyCourse && opensText) {
+		            							summary = opensText;
+		            						} else {
+		            							summary = "not bookable";
+		            						}
 		            					} else {
 		            						summary = "booking opens in " + Signup.util.formatDuration(nextOpen - now);
 		            					}
-		            				}
+		            				} 
 		                            
 		                            data.push([starts, this.title, this.department, summary, this.courseId, newCourse ]);
 		                        });
