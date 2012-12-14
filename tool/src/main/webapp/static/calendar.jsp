@@ -140,7 +140,7 @@ if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurre
 		            							}
 		            							if (daisy == this.source) {
 		            								daisyCourse = true;
-		            								if (daisy == this.source && !isOneBookable) {
+		            								if (!isOneBookable) {
 		            									isOneBookable = this.bookable;
 		            								}
 		            							}
