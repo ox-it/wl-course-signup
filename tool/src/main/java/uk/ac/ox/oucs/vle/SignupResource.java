@@ -27,6 +27,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.ext.ContextResolver;
 
@@ -39,6 +40,7 @@ import org.codehaus.jackson.map.type.TypeFactory;
 import org.sakaiproject.user.cover.UserDirectoryService;
 
 import com.sun.jersey.api.view.Viewable;
+import com.sun.jersey.server.impl.ResponseBuilderImpl;
 
 import uk.ac.ox.oucs.vle.CourseSignupService.Status;
 
@@ -98,13 +100,16 @@ public class SignupResource {
 
 	@Path("/my/new")
 	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response signup(@FormParam("courseId") String courseId, @FormParam("components")Set<String> components, @FormParam("email")String email, @FormParam("message")String message) {
 		if (UserDirectoryService.getAnonymousUser().equals(UserDirectoryService.getCurrentUser())) {
 			throw new WebApplicationException(Response.Status.FORBIDDEN);
 		}
-		//String user = courseService.findSupervisor(email);
-		courseService.signup(courseId, components, email, message);
-		return Response.ok().build();
+		CourseSignup entity = courseService.signup(courseId, components, email, message);
+		ResponseBuilder builder = new ResponseBuilderImpl();
+		builder.status(201);
+		builder.entity(entity);
+		return builder.build();
 	}
 	
 	@Path("/new")
