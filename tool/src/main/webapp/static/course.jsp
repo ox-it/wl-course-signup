@@ -97,7 +97,7 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 						$.ajax({
 							url: "/course-signup/rest/course/" + id,
 							data: {
-								range: (old) ? "PREVIOUS" : "UPCOMING"
+								range: old
 							},
 							dataType: "json",
 							cache: false,
@@ -302,7 +302,7 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 				};	
 				
                 var openAtCourse = function(id){
-					myCourse($("#coursedetails"), id, "ALL", externalUser);
+					myCourse($("#coursedetails"), id, "UPCOMING", externalUser);
 				};	
 				
 				if (openCourse != null && openCourse != "") {
