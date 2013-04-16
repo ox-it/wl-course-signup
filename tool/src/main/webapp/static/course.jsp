@@ -69,7 +69,6 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 					var waitingList;
 					var signupData;
 					var template;
-					var courseURL;
 					
 					/**
 					 * Compare two users to see if they are equal.
@@ -105,7 +104,6 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 						courseData = undefined;
 						signupData = undefined;
 						waitingList = undefined;
-						courseURL = undefined;
 						
 						$.ajax({
 							url: "/course-signup/rest/course/" + id,
@@ -121,15 +119,6 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 						});
 						
 						if (!externalUser) {
-							$.ajax({
-								url: "/course-signup/rest/course/url/" + id,
-								dataType: "json",
-								cache: false,
-								success: function(data){
-									courseURL = data;
-									showCourse();
-								}
-							});
 							
 							$.ajax({
 								url: "/course-signup/rest/signup/count/course/signups/" + id,
@@ -156,7 +145,6 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 						} else {
 							signupData = [];
 							waitingList = 0;
-							courseURL = "";
 							showCourse();
 						}
 						
@@ -191,7 +179,7 @@ pageContext.setAttribute("openCourse", (String)request.getAttribute("openCourse"
 						data.hide = externalUser; // for externally visible courses
 						data.presenters = [];
 						data.waiting = waitingList;
-						data.url = courseURL;
+						data.url = window.location.protocol+"//"+window.location.host+"/course-signup/rest/course/"+id;
 						
 						var parts = [];
 						for (var componentIdx in data.components) {

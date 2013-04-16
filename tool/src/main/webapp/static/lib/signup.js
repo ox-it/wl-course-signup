@@ -37,7 +37,6 @@ var Signup = function(){
 				var waitingList;
 				var signupData;
 				var template;
-				var courseURL;
 				
 				/**
 				 * Compare two users to see if they are equal.
@@ -73,7 +72,6 @@ var Signup = function(){
 					courseData = undefined;
 					signupData = undefined;
 					waitingList = undefined;
-					courseURL = undefined;
 					
 					$.ajax({
 						url: "../rest/course/" + id,
@@ -90,15 +88,6 @@ var Signup = function(){
 					});
 					
 					if (!externalUser) {
-						$.ajax({
-							url: "../rest/course/url/" + id,
-							dataType: "json",
-							cache: false,
-							success: function(data){
-								courseURL = data;
-								showCourse();
-							}
-						});
 						
 						$.ajax({
 							url: "../rest/signup/count/course/signups/" + id,
@@ -125,7 +114,6 @@ var Signup = function(){
 					} else {
 						signupData = [];
 						waitingList = 0;
-						courseURL = "";
 						showCourse();
 					}
 					
@@ -160,7 +148,7 @@ var Signup = function(){
 					data.hide = externalUser; // for externally visible courses
 					data.presenters = [];
 					data.waiting = waitingList;
-					data.url = courseURL;
+					data.url = window.location.protocol+"//"+window.location.host+"/course-signup/rest/course/"+id;
 					
 					var parts = [];
 					var applyTo;
