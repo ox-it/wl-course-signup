@@ -1083,7 +1083,7 @@ public class XcriOxCapPopulatorImpl implements Populator {
 			if (!descriptiveTextType.isXhtml()) {
 				text = parse(descriptiveTextType.getValue());
 			} else {
-				text = descriptiveTextType.getValue();
+				text = parseXHTML(descriptiveTextType.getValue());
 			}
 			
 			if (null != type) {
@@ -1101,6 +1101,7 @@ public class XcriOxCapPopulatorImpl implements Populator {
 	}
 
 	/**
+	 *  * Processing of descriptivetext fields where descriptiveTextType.isXhtml=false
 	 * 
 	 * @param data
 	 * @return
@@ -1131,6 +1132,19 @@ public class XcriOxCapPopulatorImpl implements Populator {
 		}
 		matcher.appendTail(sb);
 		return sb.toString();
+	}
+	
+	/**
+	 * Processing of descriptivetext fields where descriptiveTextType.isXhtml=true
+	 * 
+	 * @param data
+	 * @return
+	 */
+	protected static String parseXHTML(String data) {
+		if (null != data) {
+			data = data.replaceAll("xhtml:", "");
+		}
+		return data;
 	}
 
 }
