@@ -143,7 +143,13 @@ public class SearchServiceImpl implements SearchService {
 
 				doc.addField("course_created", chosenComponent.getCreated());
 				doc.addField("course_basedate", BaseDateComparator.getBaseDate(chosenComponent));
+			} else {
+				// We still index courses without components so that we can retrieve them from search.
+				// but they won't be found most of the time as we won't know when they are running.
+				log.info("No components found for: "+ course.getTitle()+ " ("+ course.getMuid()+") + " +
+						"so we don't know when it runs.");
 			}
+
 			getSolrServer().add(doc);
 			return true;
 

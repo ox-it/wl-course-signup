@@ -77,9 +77,9 @@
 		<field name="course_signup_closetext" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
 		<!-- Base Date for calculations of new/old course-->
-		<!-- This is required as the UI always includes a basedate in it's queries so if it's not present the course
-		     never gets found -->
-		<field name="course_basedate" type="date" indexed="true" stored="true" required="true" multiValued="false" />
+		<!-- If this field doesn't contain a value then it won't get found in the normal search as we always
+		     include a basedate in our search, but we still index them to have solr reflect the database -->
+		<field name="course_basedate" type="date" indexed="true" stored="true" required="false" multiValued="false" />
 
 		<!-- Date we first saw the course so we can flag it as "new" -->
 		<field name="course_created" type="date" indexed="true" stored="true" required="false" multiValued="false" />
