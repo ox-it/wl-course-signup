@@ -36,17 +36,19 @@ public class CourseComponentSessionDAO implements java.io.Serializable {
 	private String sessionStartText;
 	private Date sessionEnd;
 	private String sessionEndText;
-	
+	private String location;
     
     public CourseComponentSessionDAO() {
     }
     
-    public CourseComponentSessionDAO(String sessionId, Date sessionStart, String sessionStartText, Date sessionEnd, String sessionEndText) {
+    public CourseComponentSessionDAO(String sessionId, Date sessionStart, String sessionStartText, Date sessionEnd,
+                                     String sessionEndText, String location) {
     	this.sessionId = sessionId;
     	this.sessionStart = sessionStart;
     	this.sessionStartText = sessionStartText;
     	this.sessionEnd = sessionEnd;
     	this.sessionEndText = sessionEndText;
+        this.location = location;
     }
     
     public boolean equals(Object other){  
@@ -122,5 +124,12 @@ public class CourseComponentSessionDAO implements java.io.Serializable {
     public void setSessionEndText(String sessionEndText) {
         this.sessionEndText = sessionEndText;
     }
-    
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }
