@@ -104,7 +104,7 @@ public interface CourseSignupService {
 	
 	public String findSupervisor(String search);
 	
-	public CourseSignup signup(String courseId, Set<String> components, String supervisorEmail, String message) throws IllegalStateException, IllegalArgumentException;
+	public CourseSignup signup(String courseId, Set<String> components, String supervisorEmail, String message, String specialReq) throws IllegalStateException, IllegalArgumentException;
 	
 	/**
 	 * A signup made by an administrator for a user. It doesn't do checking of size and automatically sets the
