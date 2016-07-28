@@ -743,10 +743,13 @@ var Signup = function(){
 			 */
 			"formatNotes": function(notes, specialReq){
 				if (specialReq) {
-						return '<span class="signup-notes"><p class="alert">' + Text.toHtml(specialReq) + '</p>... <span class="more">[more]<span class="full">' + Text.toHtml(notes) + '</span></span></span>';
+					return '<span class="signup-notes"><p class="alert">' + Text.toHtml(specialReq) + '</p>... <span class="more">[more]<span class="full">' + Text.toHtml(notes) + '</span></span></span>';
+				}
+				else if (notes) {
+					return '<span class="signup-notes">' + Text.toHtml(notes.substr(0, 45)) + '... <span class="more">[more]<span class="full">' + Text.toHtml(notes) + '</span></span></span>';
 				}
 				else {
-					return '<span class="signup-notes">' + Text.toHtml(notes.substr(0, 45)) + '... <span class="more">[more]<span class="full">' + Text.toHtml(notes) + '</span></span></span>';
+					return "";
 				}
 			},
 			/**
